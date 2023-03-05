@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt_br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora DOM</title>
+    <style>
+        * {
+            font-family: Cambria, 'Times New Roman', serif;
+        }
+        label {
+            display: block;
+        }
+        div, fieldset {
+            margin-bottom: 20px;
+        }
+        fieldset {
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora DOM simples</h1>
+    <div>
+        <label for="num1">Primeiro número</label>
+        <input id="num1" type="number">
+    </div>
+    <div>
+        <label for="oper">Operação</label>
+        <select id="oper">
+            <option>(Selecione)</option>
+            <option>Somar</option>
+            <option>Subtrair</option>
+            <option>Multiplicar</option>
+            <option>Dividir</option>
+        </select>
+    </div>
+    <div>
+        <label for="num2">Segundo número</label>
+        <input id="num2" type="number">
+    </div>
+    <fieldset>
+        <legend>Resultado</legend>
+        <p id="resultado"></p>
+    </fieldset>
+    <div>
+        <button id="calcular">Calcular</button>
+    </div>
+    <script>
+        /*
+            Usando o exemplo do gerador de saudação, implementar o funcionamento
+            da calculadora, seguindo os passos:
+            1) Capturar todos os elementos com id
+            2) Função de validação do formulário
+            3) Função de cálculo, que chama a função de validação
+            4) Associar a função de cálculo ao clique do botão Calcular
+            Entregar no Teams até o início da aula do dia 10/11 (quinta-feira).
+            Esta atividade será considerada para a nota de participação.
+        */
+
+        // Capturar os elementos HTML
+
+        const valorNum1 = document.querySelector('#num1'); 
+        const valorNum2 = document.querySelector('#num2'); 
+        const oper = document.querySelector('#oper');
+        const resultado = document.querySelector('#resultado');
+        const calcular = document.querySelector('#calcular');
+
+        // Verifica se todas as informações necessárias foram
+        // preenchidas no formulário
+        function validar (){
+        
+        // Primeiro número
+        if(valorNum1.value === ''){
+            alert('O Primeiro número não foi Informado.');
+            valorNum1.focus(); 
+            return false; // O formulário contém erro
+        }
+
+        // Operação
+        if(oper.selectedIndex <='0'){
+            alert('Selecionar uma das Operações, recarregue a página e tente novamente!');
+            oper.focus();
+            return false;
+        }
+
+        // Segundo número
+        if(valorNum2.value ===''){
+            alert('O Segundo número não foi Informado.');
+            valorNum2.focus();
+            return false;
+        }
+
+        return true // O formulário é válido
+        
+        }
+        
+        // A Função Calc só é ativada quando passar pela função Validar
+        function calculando(){ 
+            if(validar()){
+                let num1 = valorNum1.valueAsNumber;
+                let num2 = valorNum2.valueAsNumber;
+                let resposta = calculos(num1, num2);
+                let simbolos = operando(oper.selectedIndex);
+                resultado.innerHTML = msg(num1,num2,simbolos,resposta);
+            }
+        }
+
+        // Transformando os seletores em nomes das operações
+        function operando(){ 
+            
+            if(oper.selectedIndex === 1){
+                return 'Soma'
+            }
+            if(oper.selectedIndex === 2){
+                return 'Subtração'
+            }
+            if(oper.selectedIndex === 3){
+                return 'Multiplicação'
+            }
+            if(oper.selectedIndex === 4){
+                return 'Divisão'
+            }
+
+        }
+
+        function calculos(num1, num2){
+            switch(oper.selectedIndex){
+                case 1:
+                return  num1 + num2;
+                break
+                case 2:
+                return num1 - num2;
+                break
+                case 3:
+                return num1 * num2;
+                break
+                default: 
+                    if(num2!==0){
+                return num1/num2;
+                    
+                    }
+            }
+        }
+
+        // Mesnsagem exibida ao usuário
+        function msg(num1,num2,operacao,resolucao){   
+            return `A ${operacao} de ${num1} e ${num2} é = ${resolucao}`
+        }
+
+        //Aplicando a função calculando no botão do usuário
+        calcular.addEventListener('click',calculando);  
+
+    </script>
+</body>
+</html>
